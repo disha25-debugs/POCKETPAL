@@ -1,788 +1,179 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PocketWise | Student Money Manager</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Pocket Money Manager</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
-
 <body>
-
-<div class="app-container">
-
-    <!-- SIDEBAR -->
+  <div class="app-shell">
     <aside class="sidebar">
-
-        <div class="brand">
-            <div class="brand-icon">💜</div>
-            <div>
-                <h2>PocketWise</h2>
-                <p>Student Money Manager</p>
-            </div>
-        </div>
-
-        <div class="menu-label">MENU</div>
-
-        <nav class="navigation">
-            <button class="nav-link active" data-page="dashboard">
-                🏠 <span>Dashboard</span>
-            </button>
-
-            <button class="nav-link" data-page="transactions">
-                💳 <span>Transactions</span>
-            </button>
-
-            <button class="nav-link" data-page="savings">
-                🎯 <span>Savings Goals</span>
-            </button>
-
-            <button class="nav-link" data-page="statistics">
-                📊 <span>Monthly Statistics</span>
-            </button>
-
-            <button class="nav-link" data-page="report">
-                🔍 <span>Where Did My Money Go?</span>
-            </button>
-        </nav>
-
-        <div class="sidebar-bottom">
-            <div class="tip-card">
-                <div class="tip-icon">💡</div>
-                <h4>Money Tip</h4>
-                <p>Save a little today to enjoy more tomorrow!</p>
-            </div>
-
-            <p class="sidebar-footer">Made for smart students 💜</p>
-        </div>
-
+      <a class="brand" href="#dashboard" aria-label="PocketPal home">
+        <span class="brand-icon">₹</span>
+        <span><strong>PocketPal</strong><small>Student money manager</small></span>
+      </a>
+      <nav class="nav-menu" aria-label="Main navigation">
+        <button class="nav-link active" data-page="dashboard"><span>⌂</span> Dashboard</button>
+        <button class="nav-link" data-page="transactions"><span>↕</span> Transactions</button>
+        <button class="nav-link" data-page="savings"><span>◎</span> Savings goals</button>
+        <button class="nav-link" data-page="reports"><span>▥</span> Spending report</button>
+        <button class="nav-link" data-page="settings"><span>⚙</span> Settings</button>
+      </nav>
+      <div class="sidebar-note">
+        <span class="note-icon">✦</span>
+        <strong>Small steps add up.</strong>
+        <p>Keep track of today, save for tomorrow.</p>
+      </div>
+      <p class="sidebar-footer">Your money, your plan ✿</p>
     </aside>
 
-
-    <!-- MAIN CONTENT -->
     <main class="main-content">
-
-        <!-- TOP BAR -->
-        <header class="topbar">
-
-            <div>
-                <p class="breadcrumb">PocketWise / <span id="breadcrumb-page">Dashboard</span></p>
-                <h1 id="page-title">Dashboard</h1>
-                <p id="page-subtitle">Here's an overview of your money.</p>
-            </div>
-
-            <div class="topbar-right">
-                <div class="today-date" id="today-date"></div>
-
-                <button class="primary-button" id="open-transaction">
-                    + Add Transaction
-                </button>
-            </div>
-
-        </header>
-
-
-        <!-- DASHBOARD PAGE -->
-        <section class="page active" id="dashboard">
-
-            <div class="welcome-banner">
-                <div>
-                    <p class="welcome-label">YOUR FINANCIAL SPACE</p>
-                    <h2>Hey, Smart Saver! 👋</h2>
-                    <p>Every rupee counts. Let's make your money work for you.</p>
-                </div>
-                <div class="welcome-illustration">💰</div>
-            </div>
-
-
-            <!-- SUMMARY CARDS -->
-            <div class="summary-grid">
-
-                <article class="summary-card purple-card">
-                    <div class="card-top">
-                        <span>Total Pocket Money</span>
-                        <span class="card-icon">💰</span>
-                    </div>
-                    <h2 id="total-income">₹0.00</h2>
-                    <p>Money received</p>
-                </article>
-
-                <article class="summary-card pink-card">
-                    <div class="card-top">
-                        <span>Total Expenses</span>
-                        <span class="card-icon">💸</span>
-                    </div>
-                    <h2 id="total-expenses">₹0.00</h2>
-                    <p>Money spent</p>
-                </article>
-
-                <article class="summary-card green-card">
-                    <div class="card-top">
-                        <span>Remaining Balance</span>
-                        <span class="card-icon">🐷</span>
-                    </div>
-                    <h2 id="remaining-balance">₹0.00</h2>
-                    <p>Money left to use</p>
-                </article>
-
-                <article class="summary-card blue-card">
-                    <div class="card-top">
-                        <span>Monthly Savings</span>
-                        <span class="card-icon">🎯</span>
-                    </div>
-                    <h2 id="monthly-savings">₹0.00</h2>
-                    <p>Income minus expenses this month</p>
-                </article>
-
-            </div>
-
-
-            <!-- DASHBOARD CONTENT -->
-            <div class="dashboard-grid">
-
-                <section class="panel spending-panel">
-
-                    <div class="panel-heading">
-                        <div>
-                            <h3>Spending Overview</h3>
-                            <p>See where your money goes.</p>
-                        </div>
-
-                        <select id="dashboard-period" class="small-select">
-                            <option value="month">This Month</option>
-                            <option value="all">All Time</option>
-                        </select>
-                    </div>
-
-                    <div class="chart-container">
-                        <canvas id="spending-chart"></canvas>
-                    </div>
-
-                    <div id="chart-empty" class="empty-chart hidden">
-                        Add expenses to see your spending chart.
-                    </div>
-
-                </section>
-
-
-                <section class="panel recent-panel">
-
-                    <div class="panel-heading">
-                        <div>
-                            <h3>Recent Transactions</h3>
-                            <p>Your latest money activity.</p>
-                        </div>
-
-                        <button class="text-button" data-goto="transactions">
-                            View All →
-                        </button>
-                    </div>
-
-                    <div id="recent-transactions" class="transaction-list"></div>
-
-                </section>
-
-            </div>
-
-
-            <!-- SAVINGS PREVIEW -->
-            <section class="panel dashboard-goals">
-
-                <div class="panel-heading">
-                    <div>
-                        <h3>My Savings Goals 🎯</h3>
-                        <p>Small steps lead to big achievements.</p>
-                    </div>
-
-                    <button class="text-button" data-goto="savings">
-                        Manage Goals →
-                    </button>
-                </div>
-
-                <div id="dashboard-goals-list" class="goals-grid"></div>
-
-            </section>
-
-
-            <!-- QUICK ACTIONS -->
-            <section class="quick-actions">
-
-                <button class="quick-action" id="quick-expense">
-                    <span>💸</span>
-                    <div>
-                        <strong>Add an Expense</strong>
-                        <small>Record money spent</small>
-                    </div>
-                    <span class="action-arrow">→</span>
-                </button>
-
-                <button class="quick-action" id="quick-income">
-                    <span>💰</span>
-                    <div>
-                        <strong>Add Pocket Money</strong>
-                        <small>Record money received</small>
-                    </div>
-                    <span class="action-arrow">→</span>
-                </button>
-
-                <button class="quick-action" data-goto="report">
-                    <span>🔍</span>
-                    <div>
-                        <strong>View Spending Report</strong>
-                        <small>Discover your spending habits</small>
-                    </div>
-                    <span class="action-arrow">→</span>
-                </button>
-
-            </section>
-
-        </section>
-
-
-
-        <!-- TRANSACTIONS PAGE -->
-        <section class="page" id="transactions">
-
-            <div class="section-intro">
-                <h2>Manage Your Transactions 💳</h2>
-                <p>Keep track of every rupee you receive and spend.</p>
-            </div>
-
-            <div class="transaction-summary summary-grid">
-
-                <article class="summary-card purple-card">
-                    <div class="card-top">
-                        <span>Total Income</span>
-                        <span>💰</span>
-                    </div>
-                    <h2 id="transaction-income">₹0.00</h2>
-                </article>
-
-                <article class="summary-card pink-card">
-                    <div class="card-top">
-                        <span>Total Expenses</span>
-                        <span>💸</span>
-                    </div>
-                    <h2 id="transaction-expenses">₹0.00</h2>
-                </article>
-
-                <article class="summary-card green-card">
-                    <div class="card-top">
-                        <span>Balance</span>
-                        <span>🐷</span>
-                    </div>
-                    <h2 id="transaction-balance">₹0.00</h2>
-                </article>
-
-            </div>
-
-
-            <section class="panel">
-
-                <div class="panel-heading transaction-tools-heading">
-                    <div>
-                        <h3>Transaction History</h3>
-                        <p id="transaction-count">0 transactions</p>
-                    </div>
-
-                    <button class="primary-button" id="transaction-add-button">
-                        + Add Transaction
-                    </button>
-                </div>
-
-                <div class="filters">
-
-                    <input
-                        type="search"
-                        id="search-transactions"
-                        placeholder="🔍 Search transactions..."
-                    >
-
-                    <select id="filter-type">
-                        <option value="all">All Types</option>
-                        <option value="income">Income</option>
-                        <option value="expense">Expense</option>
-                    </select>
-
-                    <select id="filter-category">
-                        <option value="all">All Categories</option>
-                        <option value="Food">Food</option>
-                        <option value="Travel">Travel</option>
-                        <option value="Stationery">Stationery</option>
-                        <option value="Entertainment">Entertainment</option>
-                        <option value="Other">Other</option>
-                    </select>
-
-                    <input type="month" id="filter-month">
-
-                </div>
-
-                <div class="table-wrapper">
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Transaction</th>
-                                <th>Category</th>
-                                <th>Date</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="transaction-table-body"></tbody>
-                    </table>
-
-                </div>
-
-                <div id="transaction-empty" class="empty-state hidden">
-                    <div>📝</div>
-                    <h3>No transactions found</h3>
-                    <p>Try changing your filters or add a transaction.</p>
-                </div>
-
-            </section>
-
-        </section>
-
-
-
-        <!-- SAVINGS GOALS PAGE -->
-        <section class="page" id="savings">
-
-            <div class="section-intro">
-                <h2>Dream It. Save For It. 🎯</h2>
-                <p>Create savings goals and watch your progress grow.</p>
-            </div>
-
-            <section class="panel goal-create-panel">
-
-                <div>
-                    <h3>Create a Savings Goal ✨</h3>
-                    <p>Choose something you want to save money for.</p>
-                </div>
-
-                <form id="goal-form" class="goal-form">
-
-                    <div class="form-group">
-                        <label for="goal-name">Goal Name</label>
-                        <input
-                            type="text"
-                            id="goal-name"
-                            placeholder="e.g. New Headphones"
-                            maxlength="60"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="goal-target">Target Amount (₹)</label>
-                        <input
-                            type="number"
-                            id="goal-target"
-                            placeholder="3000"
-                            min="0.01"
-                            max="1000000000"
-                            step="0.01"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="goal-icon">Choose Icon</label>
-                        <select id="goal-icon">
-                            <option value="🎧">🎧 Headphones</option>
-                            <option value="📱">📱 Phone</option>
-                            <option value="💻">💻 Laptop</option>
-                            <option value="📚">📚 Books</option>
-                            <option value="✈️">✈️ Travel</option>
-                            <option value="🎁">🎁 Other</option>
-                        </select>
-                    </div>
-
-                    <button class="primary-button" type="submit">
-                        + Create Goal
-                    </button>
-
-                </form>
-
-            </section>
-
-
-            <section class="panel">
-
-                <div class="panel-heading">
-                    <div>
-                        <h3>Your Savings Goals</h3>
-                        <p>Track your progress toward each goal.</p>
-                    </div>
-                </div>
-
-                <div id="all-goals-list" class="goals-grid"></div>
-
-            </section>
-
-        </section>
-
-
-
-        <!-- MONTHLY STATISTICS PAGE -->
-        <section class="page" id="statistics">
-
-            <div class="section-intro">
-                <h2>Your Monthly Statistics 📊</h2>
-                <p>Understand your income, spending, and savings.</p>
-            </div>
-
-            <section class="panel statistics-filter-panel">
-
-                <label for="statistics-month">Choose a month:</label>
-                <input type="month" id="statistics-month">
-
-            </section>
-
-
-            <div class="summary-grid">
-
-                <article class="summary-card purple-card">
-                    <div class="card-top">
-                        <span>Monthly Income</span>
-                        <span>💰</span>
-                    </div>
-                    <h2 id="stats-income">₹0.00</h2>
-                </article>
-
-                <article class="summary-card pink-card">
-                    <div class="card-top">
-                        <span>Monthly Expenses</span>
-                        <span>💸</span>
-                    </div>
-                    <h2 id="stats-expenses">₹0.00</h2>
-                </article>
-
-                <article class="summary-card green-card">
-                    <div class="card-top">
-                        <span>Monthly Savings</span>
-                        <span>🐷</span>
-                    </div>
-                    <h2 id="stats-savings">₹0.00</h2>
-                </article>
-
-                <article class="summary-card blue-card">
-                    <div class="card-top">
-                        <span>Savings Rate</span>
-                        <span>📈</span>
-                    </div>
-                    <h2 id="stats-rate">0%</h2>
-                </article>
-
-            </div>
-
-
-            <div class="dashboard-grid">
-
-                <section class="panel">
-                    <div class="panel-heading">
-                        <div>
-                            <h3>Income vs Expenses</h3>
-                            <p>Compare your money received and spent.</p>
-                        </div>
-                    </div>
-
-                    <div class="chart-container">
-                        <canvas id="monthly-chart"></canvas>
-                    </div>
-                </section>
-
-
-                <section class="panel">
-                    <div class="panel-heading">
-                        <div>
-                            <h3>Category Breakdown</h3>
-                            <p>Understand your spending distribution.</p>
-                        </div>
-                    </div>
-
-                    <div class="chart-container">
-                        <canvas id="monthly-category-chart"></canvas>
-                    </div>
-                </section>
-
-            </div>
-
-
-            <section class="panel">
-                <div class="panel-heading">
-                    <div>
-                        <h3>Monthly Insights 💡</h3>
-                        <p>Useful observations based on your spending.</p>
-                    </div>
-                </div>
-
-                <div id="monthly-insights" class="insights-list"></div>
-            </section>
-
-        </section>
-
-
-
-        <!-- WHERE DID MY MONEY GO REPORT -->
-        <section class="page" id="report">
-
-            <div class="report-banner">
-                <div>
-                    <p class="welcome-label">YOUR PERSONAL SPENDING ANALYSIS</p>
-                    <h2>Where Did My Money Go? 🔍</h2>
-                    <p>Discover your spending habits and find ways to save more.</p>
-                </div>
-                <div class="report-illustration">🕵️‍♀️</div>
-            </div>
-
-
-            <section class="panel report-filter-panel">
-
-                <div>
-                    <h3>Choose Your Report Period</h3>
-                    <p>View spending for a particular month or all time.</p>
-                </div>
-
-                <div class="report-controls">
-                    <select id="report-period">
-                        <option value="month">Selected Month</option>
-                        <option value="all">All Time</option>
-                    </select>
-
-                    <input type="month" id="report-month">
-
-                    <button class="secondary-button" id="download-report">
-                        ⬇ Download CSV
-                    </button>
-                </div>
-
-            </section>
-
-
-            <div class="summary-grid">
-
-                <article class="summary-card purple-card">
-                    <div class="card-top">
-                        <span>Total Spent</span>
-                        <span>💸</span>
-                    </div>
-                    <h2 id="report-total">₹0.00</h2>
-                </article>
-
-                <article class="summary-card pink-card">
-                    <div class="card-top">
-                        <span>Biggest Category</span>
-                        <span>🏆</span>
-                    </div>
-                    <h2 id="report-biggest">—</h2>
-                </article>
-
-                <article class="summary-card green-card">
-                    <div class="card-top">
-                        <span>Transactions</span>
-                        <span>🧾</span>
-                    </div>
-                    <h2 id="report-count">0</h2>
-                </article>
-
-            </div>
-
-
-            <div class="dashboard-grid">
-
-                <section class="panel">
-
-                    <div class="panel-heading">
-                        <div>
-                            <h3>Spending by Category</h3>
-                            <p>How your money is distributed.</p>
-                        </div>
-                    </div>
-
-                    <div class="chart-container report-chart">
-                        <canvas id="report-chart"></canvas>
-                    </div>
-
-                </section>
-
-
-                <section class="panel">
-
-                    <div class="panel-heading">
-                        <div>
-                            <h3>Category Breakdown</h3>
-                            <p>See the amount and percentage spent.</p>
-                        </div>
-                    </div>
-
-                    <div id="report-category-list" class="category-breakdown"></div>
-
-                </section>
-
-            </div>
-
-
-            <section class="panel">
-
-                <div class="panel-heading">
-                    <div>
-                        <h3>Your Money Insights 💡</h3>
-                        <p>Suggestions based on your recorded expenses.</p>
-                    </div>
-                </div>
-
-                <div id="report-insights" class="insights-list"></div>
-
-            </section>
-
-        </section>
-
-
-
-        <!-- ADD TRANSACTION MODAL -->
-        <div class="modal hidden" id="transaction-modal">
-
-            <div class="modal-backdrop" id="modal-backdrop"></div>
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <div>
-                        <h2>Add Transaction</h2>
-                        <p>Record your money activity.</p>
-                    </div>
-
-                    <button class="close-button" id="close-modal" aria-label="Close">
-                        ✕
-                    </button>
-                </div>
-
-
-                <form id="transaction-form">
-
-                    <div class="form-group">
-                        <label for="transaction-name">Transaction Name</label>
-
-                        <input
-                            type="text"
-                            id="transaction-name"
-                            placeholder="e.g. College canteen"
-                            maxlength="100"
-                            required
-                        >
-                    </div>
-
-
-                    <div class="form-group">
-                        <label>Transaction Type</label>
-
-                        <div class="type-selector">
-
-                            <label class="type-option income-option">
-                                <input
-                                    type="radio"
-                                    name="transaction-type"
-                                    value="income"
-                                >
-                                <span>💰 Income</span>
-                            </label>
-
-                            <label class="type-option expense-option">
-                                <input
-                                    type="radio"
-                                    name="transaction-type"
-                                    value="expense"
-                                    checked
-                                >
-                                <span>💸 Expense</span>
-                            </label>
-
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="transaction-amount">Amount (₹)</label>
-
-                        <input
-                            type="number"
-                            id="transaction-amount"
-                            placeholder="Enter amount"
-                            min="0.01"
-                            max="1000000000"
-                            step="0.01"
-                            required
-                        >
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="transaction-category">Category</label>
-
-                        <select id="transaction-category" required>
-                            <option value="Food">🍔 Food</option>
-                            <option value="Travel">🚌 Travel</option>
-                            <option value="Stationery">📚 Stationery</option>
-                            <option value="Entertainment">🎮 Entertainment</option>
-                            <option value="Other">📦 Other</option>
-                        </select>
-
-                        <small>Income transactions will be categorized as income automatically.</small>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="transaction-date">Date</label>
-
-                        <input
-                            type="date"
-                            id="transaction-date"
-                            required
-                        >
-                    </div>
-
-
-                    <div class="modal-actions">
-                        <button
-                            type="button"
-                            class="secondary-button"
-                            id="cancel-transaction"
-                        >
-                            Cancel
-                        </button>
-
-                        <button type="submit" class="primary-button">
-                            Save Transaction
-                        </button>
-                    </div>
-
-                </form>
-
-            </div>
-
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" id="todayLabel">YOUR MONEY SPACE</p>
+          <h1 id="pageTitle">Your dashboard</h1>
+        </div>
+        <button class="button button-primary" id="topAddButton">＋ Add transaction</button>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="welcome-card">
+          <div>
+            <p class="eyebrow light">A LITTLE CLARITY GOES A LONG WAY</p>
+            <h2>Hey there, money manager! <span>✦</span></h2>
+            <p>Here’s how your pocket money is doing.</p>
+          </div>
+          <div class="welcome-art" aria-hidden="true">₹<span>✿</span></div>
         </div>
 
+        <div class="stats-grid">
+          <article class="stat-card allowance-card">
+            <div class="stat-top"><span>Monthly pocket money</span><span class="stat-icon">₹</span></div>
+            <p class="stat-value" id="statAllowance">₹0</p>
+            <button class="text-button" data-go="settings">Edit pocket money ↗</button>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Money spent this month</span><span class="stat-icon pink">↗</span></div>
+            <p class="stat-value" id="statExpenses">₹0</p>
+            <p class="stat-caption">Your monthly expenses</p>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Other income this month</span><span class="stat-icon green">↙</span></div>
+            <p class="stat-value" id="statIncome">₹0</p>
+            <p class="stat-caption">Extra money received</p>
+          </article>
+          <article class="stat-card balance-card">
+            <div class="stat-top"><span>Estimated balance</span><span class="stat-icon purple">♡</span></div>
+            <p class="stat-value" id="statBalance">₹0</p>
+            <p class="stat-caption">Pocket money + income − expenses</p>
+          </article>
+        </div>
 
-        <!-- NOTIFICATION -->
-        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        <div class="content-grid">
+          <article class="panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">RECENT ACTIVITY</p><h3>Latest transactions</h3></div>
+              <button class="text-button" data-go="transactions">See all →</button>
+            </div>
+            <div id="recentTransactions" class="transaction-list"></div>
+          </article>
+          <article class="panel savings-summary">
+            <div class="panel-heading">
+              <div><p class="eyebrow">YOUR FUTURE SELF SAYS THANKS</p><h3>Savings goals</h3></div>
+              <button class="text-button" data-go="savings">View →</button>
+            </div>
+            <div id="dashboardGoals"></div>
+            <button class="button button-soft full-width" data-go="savings">＋ Manage savings goals</button>
+          </article>
+        </div>
+      </section>
 
-        <footer class="main-footer">
-            <p>© <span id="footer-year"></span> PocketWise · Spend Smart, Save More 💜</p>
-        </footer>
+      <section class="page" id="page-transactions">
+        <div class="page-intro">
+          <div><p class="muted">Keep every rupee accounted for.</p><h2>Transactions</h2></div>
+          <button class="button button-primary" id="showTransactionForm">＋ Add transaction</button>
+        </div>
+        <form class="panel form-panel hidden" id="transactionForm">
+          <div class="panel-heading"><div><p class="eyebrow" id="transactionFormEyebrow">NEW ENTRY</p><h3 id="transactionFormTitle">Add a transaction</h3></div><button class="icon-button" type="button" id="cancelTransaction" aria-label="Cancel">×</button></div>
+          <input type="hidden" id="transactionId">
+          <div class="form-grid">
+            <label>Description<input id="description" type="text" placeholder="e.g. Lunch at college" maxlength="80" required></label>
+            <label>Amount (₹)<input id="amount" type="number" min="0.01" step="0.01" placeholder="e.g. 120" required></label>
+            <label>Type<select id="type"><option value="expense">Expense</option><option value="income">Other income</option></select></label>
+            <label>Category<select id="category" required></select></label>
+            <label>Date<input id="date" type="date" required></label>
+          </div>
+          <div class="form-actions"><button class="button button-quiet" type="button" id="cancelTransaction2">Cancel</button><button class="button button-primary" type="submit" id="saveTransaction">Save transaction</button></div>
+        </form>
+        <article class="panel">
+          <div class="filter-row">
+            <input id="transactionSearch" type="search" placeholder="Search transactions..." aria-label="Search transactions">
+            <select id="typeFilter" aria-label="Filter by type"><option value="all">All types</option><option value="expense">Expenses</option><option value="income">Other income</option></select>
+            <select id="monthFilter" aria-label="Filter by month"></select>
+          </div>
+          <div id="allTransactions" class="transaction-list"></div>
+        </article>
+      </section>
 
+      <section class="page" id="page-savings">
+        <div class="page-intro">
+          <div><p class="muted">Give your money a goal.</p><h2>Savings goals</h2></div>
+          <button class="button button-primary" id="showGoalForm">＋ New goal</button>
+        </div>
+        <form class="panel form-panel hidden" id="goalForm">
+          <div class="panel-heading"><div><p class="eyebrow">MAKE A PLAN</p><h3 id="goalFormTitle">Create a savings goal</h3></div><button class="icon-button" type="button" id="cancelGoal" aria-label="Cancel">×</button></div>
+          <input type="hidden" id="goalId">
+          <div class="form-grid">
+            <label>Goal name<input id="goalName" maxlength="60" placeholder="e.g. New headphones" required></label>
+            <label>Target amount (₹)<input id="goalTarget" type="number" min="1" step="0.01" placeholder="e.g. 3000" required></label>
+            <label>Already saved (₹)<input id="goalSaved" type="number" min="0" step="0.01" value="0" required></label>
+          </div>
+          <div class="form-actions"><button class="button button-quiet" type="button" id="cancelGoal2">Cancel</button><button class="button button-primary" type="submit">Save goal</button></div>
+        </form>
+        <div id="goalsList" class="goals-grid"></div>
+        <div class="empty-state hidden" id="noGoals"><span>◎</span><h3>No savings goals yet</h3><p>Create a goal and watch your progress grow.</p></div>
+      </section>
+
+      <section class="page" id="page-reports">
+        <div class="page-intro"><div><p class="muted">Understand your spending habits.</p><h2>Where did my money go?</h2></div></div>
+        <article class="panel report-panel">
+          <div class="panel-heading"><div><p class="eyebrow">MONTHLY BREAKDOWN</p><h3>Spending by category</h3></div><label class="compact-label">Month <select id="reportMonth"></select></label></div>
+          <div id="reportSummary" class="report-summary"></div>
+          <div id="categoryReport" class="category-report"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-heading"><div><p class="eyebrow">THE DETAILS</p><h3>Transactions for this month</h3></div></div>
+          <div id="reportTransactions" class="transaction-list"></div>
+        </article>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="page-intro"><div><p class="muted">Make PocketPal work for you.</p><h2>Settings</h2></div></div>
+        <article class="panel settings-panel">
+          <p class="eyebrow">YOUR MONTHLY ALLOWANCE</p>
+          <h3>Edit your pocket money</h3>
+          <p class="muted">Enter the total pocket money you receive each month. You can change this any time; your saved transactions will stay as they are.</p>
+          <form id="allowanceForm" class="allowance-form">
+            <label for="allowanceAmount">Monthly pocket money (₹)</label>
+            <div class="allowance-input-row"><span>₹</span><input id="allowanceAmount" type="number" min="0" step="0.01" required placeholder="Enter your monthly pocket money"><button class="button button-primary" type="submit">Save amount</button></div>
+            <p class="success-message hidden" id="allowanceSaved" role="status">Pocket money updated successfully!</p>
+          </form>
+        </article>
+        <article class="panel settings-panel">
+          <p class="eyebrow">YOUR DATA</p><h3>Data stays in this browser</h3>
+          <p class="muted">Your transactions, pocket money and goals are saved in this browser using local storage. They do not automatically transfer to another laptop when you share the website files.</p>
+          <button class="button button-danger-outline" id="resetData">Reset all saved data</button>
+        </article>
+      </section>
+
+      <footer class="main-footer">Made for mindful money habits <span>✿</span></footer>
     </main>
-
-</div>
-
+  </div>
+  <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+  <dialog id="confirmDialog" class="confirm-dialog">
+    <form method="dialog"><h3>Reset all data?</h3><p>This will delete saved pocket money, transactions and goals from this browser. This cannot be undone.</p><div class="form-actions"><button class="button button-quiet" value="cancel">Cancel</button><button class="button button-danger" value="confirm">Reset everything</button></div></form>
+  </dialog>
 </body>
 </html>
-```
